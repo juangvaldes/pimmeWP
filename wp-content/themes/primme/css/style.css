@@ -13608,4 +13608,8 @@ body:not(.no-transition) #wrapper,
 	text-shadow: none !important;
 }
 
-
+/*Css Gallery*/
+img.width-thum-gallery {
+	width: 90px;
+	height: 68px !important;
+}
