@@ -4,13 +4,20 @@ $home = array(
 	);
 
 $the_query = new WP_Query($home);
+$count_post = wp_count_posts('home')->publish;
+$i = 1;
 if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_post();
-echo wp_count_posts('home')->publish;
 	$tipo_seccion = get_field("tipo_de_seccion");
+	$add_style = null;
+	if($i == 2) {
+		$add_style = 'padding-top: 30px;';
+	} else if($i == $count_post) {
+		$add_style = 'padding-bottom: 150px;';
+	}
 	if($tipo_seccion == 2) {
 		$img = get_field("imagen_contactarme");
 ?>
-	<div style="background-color: #371b7c; padding-top: 30px;">
+	<div style="background-color: #371b7c;<?php echo $add_style;?>">
 		<form action="#" method="post" role="form" class="landing-wide-form clearfix" >
 
 			<img src="<?php echo $img['url']?>" class="col_one_fourth" >
@@ -32,7 +39,7 @@ echo wp_count_posts('home')->publish;
 		$style_section = null;
 		$style_text = null;
 		if(!empty($color_section) && ( $color_section != '#ffffff' )) {
-			$style_section = "style='background-color: ".$color_section.";'";
+			$style_section = "style='background-color: ".$color_section."; ".$add_style."'";
 			$style_boton = "style='border-color: #fff; color: #fff;'";
 			$style_text = "color-text";
 		}
@@ -42,9 +49,14 @@ echo wp_count_posts('home')->publish;
 
 			<?php
 			if(!empty($add_img)) {
+				$position_css = null;
 				$img = get_field("imagen_contenido");
+				$position_img = get_field("posicion_imagen");
+				if($position_img == 'right') {
+					$position_css = 'position-img-info';
+				}
 			?>
-			<div class="col_half nobottommargin topmargin-lg">
+			<div class="col_half nobottommargin topmargin-lg <?php echo $position_css;?>">
 				<img src="<?php echo $img['url'];?>" alt="<?php echo $img['alt'];?>" class="center-block">
 			</div>
 			<?php
@@ -73,6 +85,7 @@ echo wp_count_posts('home')->publish;
 	</div>
 <?php
 	}
+	$i++;
 endwhile; else :
 _e('Sorry, the post had not content.');
 endif;

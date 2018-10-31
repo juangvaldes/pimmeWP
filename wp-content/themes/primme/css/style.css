@@ -659,7 +659,7 @@ body.stretched .container-fullwidth {
 
 .col_last {
 	margin-right: 0 !important;
-	clear: right;
+	/*clear: right;*/
 }
 
 
@@ -13638,4 +13638,8 @@ body:not(.no-transition) #wrapper,
 img.width-thum-gallery {
 	width: 90px;
 	height: 68px !important;
+}
+
+div.position-img-info{
+	float: right;
 }
