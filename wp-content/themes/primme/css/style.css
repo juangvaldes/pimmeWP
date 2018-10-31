@@ -962,7 +962,7 @@ html[xmlns] .slider-wrap {display: block;}
 
 #header {
 	position: relative;
-	background-color: rebeccapurple;
+	/*background-color: rebeccapurple;*/
 	border-bottom: 1px solid #F5F5F5;
 }
 
@@ -11182,6 +11182,30 @@ input[type=checkbox]:not(:checked) + label.error { display: block !important; }
 	color: #777;
 }
 
+.heading-block > p {
+	display: block;
+	margin-top: 10px;
+	font-weight: 300;
+	color: #777;
+}
+
+.color-text > p {
+	color: #fff;
+}
+
+.color-text > h1 {
+	color: #fff;
+}
+.color-text > h2 {
+	color: #fff;
+}
+.color-text > h3 {
+	color: #fff;
+}
+.color-text > h4 {
+	color: #fff;
+}
+
 .heading-block .before-heading { margin-bottom: 7px; }
 
 .heading-block.center > span,
@@ -11198,6 +11222,8 @@ input[type=checkbox]:not(:checked) + label.error { display: block !important; }
 
 .heading-block h3 + span,
 .heading-block h4 + span { font-size: 20px; }
+
+.information-section p { font-size: 22px; }
 
 .heading-block ~ p:not(.lead) { font-size: 15px; }
 

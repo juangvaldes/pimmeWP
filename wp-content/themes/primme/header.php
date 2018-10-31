@@ -15,7 +15,7 @@
 </head>
 
 <body class="stretched">
-
+    <input type="hidden" id="path_wp" value="<?php bloginfo('template_url')?>"/>
     <!-- Document Wrapper
     ============================================= -->
     <div id="wrapper" class="clearfix">
@@ -39,29 +39,7 @@
 
                     <!-- Primary Navigation
                     ============================================= -->
-                    <?php 
-                    $defaults = array( 
-                        'theme_location' => 'principal-menu', 
-                        'container' => 'nav', 
-                        'container_id' => 'primary-menu',
-                        'link_before' => '<i class="icon-home"></i>'
-                        );
-                    wp_nav_menu($defaults);
-                    ?>
                     <nav id="primary-menu">
-
-                        <ul>
-                            <li><a href="index.html"><div><i class="icon-home"></i>Inicio</div></a>
-                            </li>
-                            <li><a href="contacto.html"><div><i class="icon-line2-arrow-right"></i>Inscríbete</div></a>
-                            </li>
-                            <li><a href="blog.html"><div><i class="icon-news"></i>Blog</div></a>
-                            </li>
-                            <li><a href="business/index.html"><div><i class="icon-coffee"></i>Business</div></a>
-                            </li>
-                        </ul>
-
-
 
                         <!-- Top Search
                         ============================================= -->

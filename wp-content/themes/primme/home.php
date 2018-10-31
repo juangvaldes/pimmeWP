@@ -1,5 +1,5 @@
 <?php get_header();?>
-
+		<input type="hidden" id="page-blog" value="true"/>
 		<!-- Page Title
 		============================================= -->
 		<section id="page-title2">
@@ -53,77 +53,34 @@
 								$frase = false;
 								$icon_content = null;
 								if($type_seccion == 1) {
+
 									$image = get_field('imagen');
-									$icon_content = "icon-camera-retro";
-									echo '<img src="'.$image['url'].'" alt="'.$image['title'].'" title="'.$image['title'].'"/>';
+									echo render_img($image);
+
 								} else if($type_seccion == 2) {
+
 									$icon_content = "icon-film";
 									the_field('video');
+
 								} else if($type_seccion == 3) {
-									$icon_content = "icon-picture";
+
 									$galeria_imagenes = acf_photo_gallery('galeria_imagenes', $post->ID);
-								?>
-								<div class="portfolio-single-image masonry-thumbs grid-4" data-big="3" data-lightbox="gallery">
-								<?php
-									foreach($galeria_imagenes as $value) :
-										echo '<a href="'.$value['full_image_url'].'" data-lightbox="gallery-item">
-												<img src="'.$value['thumbnail_image_url'].'" class="width-thum-gallery image_fade"/>
-											</a>';
-									endforeach;
-								?>
-								</div>
-								<?php
+									echo render_galeria_img($galeria_imagenes);
+
 								} else if($type_seccion == 4) {
-									$icon_content = "icon-picture";
+
 									$slider_cuadrado = acf_photo_gallery('slider_cuadrado', $post->ID);
-								?>
-								<div class="fslider" data-animation="fade" data-pagi="false" data-pause="6000" data-lightbox="gallery">
-									<div class="flexslider">
-										<div class="slider-wrap">
-								<?php
-									foreach($slider_cuadrado as $value) :
-								?>
-										<div class="slide">
-											<a href="<?php echo $value['full_image_url'];?>" data-lightbox="gallery-item">
-								<?php
-										echo '<img src="'.$value['full_image_url'].'" class="image_fade" title="'.$value['title'].'"/>';
-								?>
-											</a>
-										</div>
-								<?php
-									endforeach;
-								?>
-										</div>
-									</div>
-								</div>
-								<?php
+									echo render_slider_cuadrado($slider_cuadrado);
+
 								} else if($type_seccion == 5) {
-									$icon_content = "icon-picture";
+
 									$slider_vertical = acf_photo_gallery('slider_vertical', $post->ID);
-								?>
-								<div class="fslider" data-arrows="false" data-lightbox="gallery">
-									<div class="flexslider">
-										<div class="slider-wrap">
-								<?php
-									foreach($slider_vertical as $value) :
-								?>
-										<div class="slide">
-											<a href="<?php echo $value['full_image_url'];?>" data-lightbox="gallery-item">
-								<?php
-										echo '<img src="'.$value['full_image_url'].'" class="image_fade" title="'.$value['title'].'" alt="'.$value['title'].'"/>';
-								?>
-											</a>
-										</div>
-								<?php
-									endforeach;
-								?>
-										</div>
-									</div>
-								</div>
-								<?php
+									echo render_slider_vertical($slider_vertical);
+
 								} else if($type_seccion == 6) {
-									$icon_content = "icon-quote-left";
+
 									$frase = true;
+									$icon_content = "icon-quote-left";
 								?>
 									<blockquote>
 										<p><?php the_content();?></p>
@@ -131,11 +88,12 @@
 									</blockquote>
 								<?php
 								} else if($type_seccion == 7) {
+
 									$frase = true;
 									$icon_content = "icon-link";
 								?>
 									<a href="<?php the_field('agregar_link');?>" class="entry-link" target="_blank">
-										<?php the_title(); ?>
+										<?php the_title();?>
 										<span>- <?php the_field('agregar_link');?></span>
 									</a>
 								<?php
@@ -171,6 +129,18 @@
 							<p><?php esc_html_e( 'Sorry, no posts matched your criteria.' ); ?></p>
 						<?php endif; ?>
 					</div><!-- #posts end -->
+
+					<!-- Pagination
+					============================================= -->
+					<ul class="pagination nobottommargin">
+						<li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+						<li class="page-item active"><a class="page-link" href="#">1</a></li>
+						<li class="page-item"><a class="page-link" href="#">2</a></li>
+						<li class="page-item"><a class="page-link" href="#">3</a></li>
+						<li class="page-item"><a class="page-link" href="#">4</a></li>
+						<li class="page-item"><a class="page-link" href="#">5</a></li>
+						<li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+					</ul>
 
 				</div>
 
