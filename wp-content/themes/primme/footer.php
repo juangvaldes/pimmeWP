@@ -55,19 +55,22 @@
 										</svg>
 
 								</div>
+<?php
+$footer = array(
+	'post_type' => 'footer'
+	);
 
+$the_query = new WP_Query($footer);
+if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_post();
+	$tipo_footer = get_field("imagen_footer");
+?>
 
-								<p>Red de profesionales digitales y de tecnología</p>
+								<p><?php the_field('eslogan');?></p>
 
-								<div style="background: url('images/world-map.png') no-repeat center center; background-size: 100%;">
+								<div style="background: url('<?php echo $tipo_footer['url'];?>') no-repeat center center; background-size: 100%;">
 									<address>
-										<strong>Oficinas Principales:</strong><br>
-										Torre Samsung<br>
-										Cra. 7 No. 113 - 43 Oficina: 1801<br>
-										Bogotá - Colombia<br>
+										<?php the_field('informacion_contacto');?>
 									</address>
-									<abbr title="Phone Number"><strong>Teléfono:</strong></abbr> (+57 1) 756 15 77<br>
-									<abbr title="Email Address"><strong>Email:</strong></abbr> info@primmehunt.com
 								</div>
 
 							</div>
@@ -77,7 +80,7 @@
 						<div class="col_one_third">
 
 						<div class="widget subscribe-widget clearfix">
-							<h5><strong>¿Buscando historias sobre los temas que te apasionan? Suscríbete a nuestro blog y mantente actualizado con las tendencias digitales y de tecnología.</h5>
+							<h5><strong><?php the_field('informacion_suscripcion');?></h5>
 							<div class="widget-subscribe-form-result"></div>
 							<form id="widget-subscribe-form" action="include/subscribe.php" role="form" method="post" class="nobottommargin">
 								<div class="input-group divcenter">
@@ -187,6 +190,11 @@
 				</div><!-- .footer-widgets-wrap end -->
 
 			</div>
+<?php
+endwhile; else :
+_e('Sorry, the post had not content.');
+endif;
+?>
 
 			<!-- Copyrights
 			============================================= -->
@@ -195,8 +203,7 @@
 				<div class="container clearfix">
 
 					<div class="col_half">
-						&copy; Primme Hunt 2018<br>
-						<div class="copyright-links"><a href="politicas.html" target="_blank">Políticas de Privacidad</a></div>
+						<?php the_field('copyrights');?></div>
 					</div>
 
 					<div class="col_half col_last tright">
