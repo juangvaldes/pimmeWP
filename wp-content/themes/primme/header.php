@@ -15,7 +15,7 @@
 </head>
 
 <body class="stretched">
-    <input type="hidden" id="path_wp" value="<?php bloginfo('template_url')?>"/>
+    <input type="hidden" id="path_wp" value="<?php bloginfo('template_directory')?>"/>
     <!-- Document Wrapper
     ============================================= -->
     <div id="wrapper" class="clearfix">

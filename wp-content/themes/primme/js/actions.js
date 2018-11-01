@@ -31,6 +31,35 @@ $( document ).ready(function() {
 	 		});
 	 	}
 	});
+
+	$.get( path_wp + "/../../../wp-json/wp/v2/categories", function( data ) {
+	 	if(data.length > 0) {
+	 		var ul = $('ul#blog-menu');
+	 		var category_slug = $("#category-slug").val();
+	 		$.each(data, function(v, k) {
+	 			if(k.id != 1) {
+		 			var li = $('<li/>')
+			        .appendTo(ul);
+			        if(v == 1 && category_slug == '') {
+	 					li.addClass("current");	
+	 				} else if (category_slug == k.slug) {
+	 					li.addClass("current");	
+	 				}
+	 				if(k.slug == 'todos') {
+	 					var path_category = path_wp + "/../../../blog";
+	 				} else {
+	 					var path_category = path_wp + "/../../../blog?category="+k.slug;
+	 				}
+			        var aaa = $('<a/>')
+			        .attr("href", path_category)
+			        .appendTo(li);
+			        var div = $('<div/>')
+			        .text(k.name)
+			        .appendTo(aaa);
+		    	}
+	 		});
+	 	}
+	});
 });
 
 function validate_header() {

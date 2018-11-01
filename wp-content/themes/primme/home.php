@@ -23,7 +23,8 @@
 					<div class="menu-title"><span>PRIMME</span> BLOG</div>
 
 					<nav>
-						
+						<ul id="blog-menu">
+						</ul>
 					</nav>
 
 					<div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
@@ -44,8 +45,24 @@
 
 					<!-- Posts
 					============================================= -->
+					<?php 
+					$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					$args = array(
+					    'posts_per_page' => 1,
+					    'paged' => $paged
+					);
+					$category_slug = null;
+					if(isset($_GET['category']) && !empty($_GET['category'])) {
+						$args['category_name'] = $_GET['category'];
+						$category_slug = $_GET['category'];
+					} 
+					?>
+					<input type="hidden" name="category-slug" id="category-slug" value="<?php echo $category_slug;?>"/>
 					<div id="posts" class="post-grid grid-container post-masonry grid-3 clearfix">
-						<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+						<?php
+						$wp_query = new WP_Query($args);
+						//echo $query->max_num_pages;exit;
+						if ( $wp_query->have_posts() ) : while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 						<div class="entry clearfix">
 							<div class="entry-image">
 								<?php
@@ -53,7 +70,7 @@
 								$frase = false;
 								$icon_content = null;
 								if($type_seccion == 1) {
-
+									$icon_content = "icon-camera-retro";
 									$image = get_field('imagen');
 									echo render_img($image);
 
@@ -63,17 +80,17 @@
 									the_field('video');
 
 								} else if($type_seccion == 3) {
-
+									$icon_content = "icon-picture";
 									$galeria_imagenes = acf_photo_gallery('galeria_imagenes', $post->ID);
 									echo render_galeria_img($galeria_imagenes);
 
 								} else if($type_seccion == 4) {
-
+									$icon_content = "icon-picture";
 									$slider_cuadrado = acf_photo_gallery('slider_cuadrado', $post->ID);
 									echo render_slider_cuadrado($slider_cuadrado);
 
 								} else if($type_seccion == 5) {
-
+									$icon_content = "icon-picture";
 									$slider_vertical = acf_photo_gallery('slider_vertical', $post->ID);
 									echo render_slider_vertical($slider_vertical);
 
@@ -97,6 +114,10 @@
 										<span>- <?php the_field('agregar_link');?></span>
 									</a>
 								<?php
+								} else if($type_seccion == 8) {
+									$icon_content = "icon-music2";
+									$iframe = get_field("iframe");
+									echo render_iframe($iframe);
 								}
 								?>
 							</div>
@@ -132,6 +153,7 @@
 
 					<!-- Pagination
 					============================================= -->
+					<?php wpbeginner_numeric_posts_nav();?>
 					<ul class="pagination nobottommargin">
 						<li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
 						<li class="page-item active"><a class="page-link" href="#">1</a></li>
