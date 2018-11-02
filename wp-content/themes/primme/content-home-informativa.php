@@ -43,9 +43,15 @@ if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_pos
 			$style_boton = "style='border-color: #fff; color: #fff;'";
 			$style_text = "color-text";
 		}
+		$add_ancla = get_field("ancla");
+		$id_ancla = get_field("id_ancla");
+		$un_ancla = null;
+		if ($add_ancla==1) {
+			$un_ancla = "id='".$id_ancla."'";
+		}
 ?>
 	<div class="section notopmargin nobottommargin" <?php echo $style_section;?>>
-		<div class="container clearfix">
+		<div class="container clearfix" <?php echo $un_ancla;?> >
 
 			<?php
 			if(!empty($add_img)) {
