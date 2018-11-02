@@ -46,7 +46,7 @@
 					<!-- Posts
 					============================================= -->
 					<?php 
-					$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					$paged = (get_query_var('page')) ? get_query_var('page') : 1;
 					$args = array(
 					    'posts_per_page' => 1,
 					    'paged' => $paged

@@ -125,6 +125,9 @@ function render_iframe($iframe) {
 }
 
 
+/*******************************************************************************************************/
+/* Paginador blog */
+/*******************************************************************************************************/
 function wpbeginner_numeric_posts_nav() {
  
     if( is_singular() )
@@ -136,7 +139,7 @@ function wpbeginner_numeric_posts_nav() {
     if( $wp_query->max_num_pages <= 1 )
         return;
  
-    $paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+    $paged = $_GET[ 'page' ] ? absint( $_GET[ 'page' ] ) : 1;
     $max   = intval( $wp_query->max_num_pages );
  
     /** Add current page to the array */
@@ -157,14 +160,14 @@ function wpbeginner_numeric_posts_nav() {
     echo '<ul class="pagination nobottommargin">' . "\n";
  
     /** Previous Post Link */
-    if ( get_previous_posts_link() )
-        printf( '<li>%s</li>' . "\n", get_previous_posts_link() );
+    //if ( get_previous_posts_link() )
+        printf( '<li>%s</li>' . "\n", post_link_attributes(get_previous_posts_link("&laquo;")) );
  
     /** Link to first page, plus ellipses if necessary */
     if ( ! in_array( 1, $links ) ) {
         $class = 1 == $paged ? ' class="active"' : '';
  
-        printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( 1 ) ), '1' );
+        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( 1 ) )), '1' );
  
         if ( ! in_array( 2, $links ) )
             echo '<li class="page-item">…</li>';
@@ -174,7 +177,7 @@ function wpbeginner_numeric_posts_nav() {
     sort( $links );
     foreach ( (array) $links as $link ) {
         $class = $paged == $link ? ' class="page-item active"' : ' class="page-item"';
-        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $link );
+        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( $link ) )), $link );
     }
  
     /** Link to last page, plus ellipses if necessary */
@@ -183,15 +186,28 @@ function wpbeginner_numeric_posts_nav() {
             echo '<li class="page-item">…</li>' . "\n";
  
         $class = $paged == $max ? ' class="page-item active"' : ' class="page-item"';
-        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $max ) ), $max );
+        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( $max ) )), $max );
     }
  
     /** Next Post Link */
-    if ( get_next_posts_link() )
-        printf( '<li class="page-item">%s</li>' . "\n", get_next_posts_link('&raquo;') );
+    //if ( get_next_posts_link() )
+        printf( '<li class="page-item">%s</li>' . "\n", post_link_attributes(get_next_posts_link('&raquo;')) );
  
     echo '</ul>' . "\n";
  
+}
+
+function alter_link_paginator($link) {
+	$link = explode("?",$link);
+	return str_replace("page/", "?page=", $link[0]);
+}
+
+function post_link_attributes($output) {
+    $code = 'class="page-link"';
+    $output = str_replace('<a href=', '<a '.$code.' href=', $output);
+    echo $pos = strpos($output, 'http');
+    //$output = str_replace('page/', '?page=', $output);
+    return $output;
 }
 
 function wmpudev_enqueue_icon_stylesheet() {
