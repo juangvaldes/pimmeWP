@@ -198,15 +198,22 @@ function wpbeginner_numeric_posts_nav() {
 }
 
 function alter_link_paginator($link) {
+	$category = isset($_GET['category']) && !empty($_GET['category']) ? '&category='.$_GET['category'] : '';
 	$link = explode("?",$link);
-	return str_replace("page/", "?page=", $link[0]);
+	return str_replace("page/", "?page=", $link[0].$category);
 }
 
 function post_link_attributes($output) {
+	$category = isset($_GET['category']) && !empty($_GET['category']) ? '&category='.$_GET['category'] : '';
     $code = 'class="page-link"';
     $output = str_replace('<a href=', '<a '.$code.' href=', $output);
-    echo $pos = strpos($output, 'http');
-    //$output = str_replace('page/', '?page=', $output);
+    
+    if(strpos($output, '?') != "") {
+    	$pos = substr($output, strpos($output, '?'));
+    	$pos = substr($pos, 0, strpos($pos, '"'));
+    	$output = str_replace($pos, '', $output);
+    }
+    $output = str_replace('page/', '?page=', $output);
     return $output;
 }
 
