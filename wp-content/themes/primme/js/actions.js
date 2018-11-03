@@ -60,6 +60,26 @@ $( document ).ready(function() {
 	 		});
 	 	}
 	});
+
+		$.get( path_wp + "/../../../wp-json/wp/v2/categories", function( data ) {
+	 	if(data.length > 0) {
+	 		var div = $('#categorias-single-blog');
+	 		$.each(data, function(v, k) {
+	 			if(k.id != 1) {
+	 				if(k.slug == 'todos') {
+	 					var path_category = path_wp + "/../../../blog";
+	 				} else {
+	 					var path_category = path_wp + "/../../../blog?category="+k.slug;
+	 				}
+			        var aaa = $('<a/>')
+			        .attr("href", path_category)
+			        .text(k.name)
+			        .appendTo(div);
+			        
+		    	}
+	 		});
+	 	}
+	});
 });
 
 function validate_header() {

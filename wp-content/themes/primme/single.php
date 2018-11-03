@@ -99,15 +99,8 @@
 
 									<!-- Tag Cloud
 									============================================= -->
-									<div class="tagcloud clearfix bottommargin">
-										<a href="#">Contenido Digital</a>
-										<a href="#">Redes Sociales</a>
-										<a href="#">Talento</a>
-										<a href="#">Diseño</a>
-										<a href="#">Desarrollo</a>
-										<a href="#">Performance</a>
-										<a href="#">Gerencia de Proyectos</a>
-										<a href="#">Tecnología</a>
+									<div class="tagcloud clearfix bottommargin" id="categorias-single-blog">
+										
 									</div><!-- .tagcloud end -->
 
 									<div class="clear"></div>
