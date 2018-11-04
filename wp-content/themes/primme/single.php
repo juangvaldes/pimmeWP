@@ -190,7 +190,7 @@
 											</div>
 											<ul class="entry-meta clearfix">
 												<li><i class="icon-calendar3"></i> <?php the_time('F j, Y'); ?></li>
-												<li><a href="#"><i class="icon-comments"></i> <?php echo wpb_comment_count($post->ID);?></a></li>
+												<li><a href="<?php the_permalink(); ?>"><i class="icon-comments"></i> <?php echo wpb_comment_count($post->ID);?></a></li>
 											</ul>
 											<div class="entry-content"><?php the_field("resumen_post");?></div>
 										</div>
@@ -253,7 +253,7 @@
 
 											<div class="comment-content clearfix">
 
-												<div class="comment-author"><?php echo $comment->comment_author;?><span><a href="#" title="Permalink to this comment"><?php the_time('F j, Y g:i a') ?></a></span></div>
+												<div class="comment-author"><?php echo $comment->comment_author;?><span><a href="<?php the_permalink(); ?>" title="Permalink to this comment"><?php the_time('F j, Y g:i a') ?></a></span></div>
 
 												<p><?php echo $comment->comment_content;?></p>
 
@@ -293,7 +293,7 @@
 
 													<div class="comment-content clearfix">
 
-														<div class="comment-author"><a href='#' rel='external nofollow' class='url'><?php echo $sub_comment->comment_author;?></a><span><a href="#" title="Permalink to this comment"><?php echo mysql2date('F j, Y g:i a', $sub_comment->comment_date); ?></a></span></div>
+														<div class="comment-author"><a href='<?php the_permalink(); ?>' rel='external nofollow' class='url'><?php echo $sub_comment->comment_author;?></a><span><a href="<?php the_permalink(); ?>" title="Permalink to this comment"><?php echo mysql2date('F j, Y g:i a', $sub_comment->comment_date); ?></a></span></div>
 
 														<p><?php echo $sub_comment->comment_content;?></p>
 
@@ -392,48 +392,26 @@
 
 										<div class="tab-content clearfix" id="tabs-1">
 											<div id="popular-post-list-sidebar">
-
+												<?php
+												$popularpost = new WP_Query( array( 'posts_per_page' => 3, 'orderby' => 'meta_value_num', 'order' => 'DESC'  ) );
+												while ( $popularpost->have_posts() ) : $popularpost->the_post();
+												?>
 												<div class="spost clearfix">
 													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/3.jpg" alt=""></a>
+														<a href="#" class="nobg"><img class="rounded-circle" src="<?php bloginfo('template_directory')?>/images/magazine/small/3.jpg" alt=""></a>
 													</div>
 													<div class="entry-c">
 														<div class="entry-title">
-															<h4><a href="#">Debitis nihil placeat, illum est nisi</a></h4>
+															<h4><a href="<?php the_permalink(); ?>"><?php the_title();?></a></h4>
 														</div>
 														<ul class="entry-meta">
-															<li><i class="icon-comments-alt"></i> 35 Comentarios</li>
+															<li><i class="icon-comments-alt"></i> <?php echo wpb_comment_count($post->ID);?> Comentarios</li>
 														</ul>
 													</div>
 												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/2.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<div class="entry-title">
-															<h4><a href="#">Elit Assumenda vel amet dolorum quasi</a></h4>
-														</div>
-														<ul class="entry-meta">
-															<li><i class="icon-comments-alt"></i> 24 Comentarios</li>
-														</ul>
-													</div>
-												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/1.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<div class="entry-title">
-															<h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4>
-														</div>
-														<ul class="entry-meta">
-															<li><i class="icon-comments-alt"></i> 19 Comentarios</li>
-														</ul>
-													</div>
-												</div>
+												<?php
+												endwhile;
+												?>
 
 											</div>
 										</div>
