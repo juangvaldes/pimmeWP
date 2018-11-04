@@ -373,9 +373,8 @@
 
 							<div class="widget clearfix">
 
-								<h4>Galería de Flickr</h4>
-								<div id="flickr-widget" class="flickr-feed masonry-thumbs" data-id="613394@N22" data-count="16" data-type="group" data-lightbox="gallery"></div>
-
+								<h4>Galería de Instagram</h4>
+								<?php echo do_shortcode('[jr_instagram id="2"]');?>
 							</div>
 
 							<div class="widget clearfix">
