@@ -12,28 +12,7 @@
 
 		</section><!-- #page-title end -->
 
-		<!-- Page Sub Menu
-		============================================= -->
-		<div id="page-menu">
-
-			<div id="page-menu-wrap">
-
-				<div class="container clearfix">
-
-					<div class="menu-title"><span>PRIMME</span> BLOG</div>
-
-					<nav>
-						<ul id="blog-menu">
-						</ul>
-					</nav>
-
-					<div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
-
-				</div>
-
-			</div>
-
-		</div><!-- #page-menu end -->
+		<?php get_template_part("content", "sub-menu-blog");?>
 
 		<!-- Content
 		============================================= -->
@@ -48,7 +27,7 @@
 					<?php 
 					$paged = (get_query_var('page')) ? get_query_var('page') : 1;
 					$args = array(
-					    'posts_per_page' => 1,
+					    'posts_per_page' => 9,
 					    'paged' => $paged
 					);
 					$category_slug = null;
@@ -132,14 +111,14 @@
 							?>
 							<ul class="entry-meta clearfix">
 								<li><i class="icon-calendar3"></i> <?php the_time('F j, Y'); ?></li>
-								<li><a href="blog-single.html#comments"><i class="icon-comments"></i> 13</a></li>
+								<li><a href="blog-single.html#comments"><i class="icon-comments"></i> <?php echo wpb_comment_count($post->ID);?></a></li>
 								<li><a href="#"><i class="<?php echo $icon_content;?>"></i></a></li>
 							</ul>
 							<?php
 							if(!$frase) {
 							?>
 								<div class="entry-content" style="font-size: 20px; font-weight: 200;">
-									<p><?php the_excerpt();?></p>
+									<p><?php the_field("resumen_post");?></p>
 									<a href="<?php the_permalink(); ?>" class="more-link">Ver Más</a>
 								</div>
 							<?php

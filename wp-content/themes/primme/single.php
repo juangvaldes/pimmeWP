@@ -1,44 +1,11 @@
 <?php get_header()?>
-
-		<!-- Page Sub Menu
-		============================================= -->
-		<div id="page-menu">
-
-			<div id="page-menu-wrap">
-
-				<div class="container clearfix">
-
-					<div class="menu-title"><span>PRIMME</span> BLOG</div>
-
-					<nav>
-						<ul>
-							<li class="current"><a href="blog.html"><div>Todos</div></a></li>
-							<li><a href="#"><div>Contenido Digital</div></a></li>
-							<li><a href="#"><div>Redes Sociales</div></a></li>
-							<li><a href="#"><div>Talento</div></a></li>
-							<li><a href="#"><div>Diseño</div></a>
-							<!--
-								<ul>
-									<li><a href="#"><div>Illustration</div></a></li>
-									<li><a href="#"><div>Typography</div></a></li>
-								</ul>
-							-->
-							</li>
-							<li><a href="#"><div>Desarrollo</div></a></li>
-							<li><a href="#"><div>Performance</div></a></li>
-							<li><a href="#"><div>Gerencia de Proyectos</div></a></li>
-							<li><a href="#"><div>Tecnología</div></a></li>
-						</ul>
-					</nav>
-
-					<div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
-
-				</div>
-
-			</div>
-
-		</div><!-- #page-menu end -->
-
+<input type="hidden" id="page-blog" value="true"/>
+		<?php get_template_part("content", "sub-menu-blog");?>
+		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); 
+		global $wp;
+		$urlPath = home_url($wp->request);
+		add_comment($post->ID, $urlPath);
+		?>
 		<!-- Content
 		============================================= -->
 		<section id="content">
@@ -55,7 +22,6 @@
 
 							<!-- Single Post
 							============================================= -->
-							<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 							<div class="entry clearfix">
 
 								<!-- Entry Title
@@ -70,7 +36,7 @@
 									<li><i class="icon-calendar3"></i> <?php the_time('F j, Y'); ?></li>
 									<li><a href="#"><i class="icon-user"></i> <?php the_author(); ?></a></li>
 									<li><i class="icon-folder-open"></i> <a href="#">Diseño</a></li>
-									<li><a href="#"><i class="icon-comments"></i> 43 Comentarios</a></li>
+									<li><a href="#"><i class="icon-comments"></i> <?php echo wpb_comment_count($post->ID);?> Comentarios</a></li>
 									<li><a href="#"><i class="icon-camera-retro"></i></a></li>
 								</ul><!-- .entry-meta end -->
 
@@ -78,14 +44,14 @@
 								============================================= -->
 								<div class="entry-image">
 									<?php
-									if(has_post_thumbnail()) {
+									$type_destacada = get_field("imagen_o_video_destacado");
+									if($type_destacada == 1) {
+										$img_destacada = get_field("imagen_destacada");
 									?>
-									<a href="<?php the_permalink(); ?>">
+										<img src="<?php echo $img_destacada['url'];?>"/>
 									<?php
-										the_post_thumbnail();
-									?>
-									</a>
-									<?php
+									} else if($type_destacada == 2) {
+										the_field('video_destacado');
 									}
 									?>
 								</div><!-- .entry-image end -->
@@ -99,7 +65,7 @@
 
 									<!-- Tag Cloud
 									============================================= -->
-									<div class="tagcloud clearfix bottommargin" id="categorias-single-blog">
+									<div class="tagcloud clearfix bottommargin categorias-single-blog">
 										
 									</div><!-- .tagcloud end -->
 
@@ -135,22 +101,18 @@
 
 								</div>
 							</div><!-- .entry end -->
-							<?php endwhile; else : ?>
-								<p><?php esc_html_e( 'Sorry, no posts matched your criteria.' ); ?></p>
-							<?php endif; ?>
 
 							<!-- Post Navigation
 							============================================= -->
 							<div class="post-navigation clearfix">
 
 								<div class="col_half nobottommargin">
-									<a href="#">&lArr; Nombre del anterior artículo</a>
+									<?php previous_post_link("%link","&lArr; Anterior artículo"); ?>
 								</div>
 
 								<div class="col_half col_last tright nobottommargin">
-									<a href="#">Nombre del siguiente artículo &rArr;</a>
+									<?php next_post_link("%link","Siguiente artículo &rArr;"); ?>
 								</div>
-
 							</div><!-- .post-navigation end -->
 
 							<div class="line"></div>
@@ -158,12 +120,15 @@
 							<!-- Post Author Info
 							============================================= -->
 							<div class="card" style="font-size: 15px; font-weight: 200;">
-								<div class="card-header"><strong>Publicado por <a href="#">Carolina Morales</a></strong></div>
+								<div class="card-header"><strong>Publicado por <a href="#"><?php the_field("publicado_por");?></a></strong></div>
 								<div class="card-body">
 									<div class="author-image">
-										<img src="images/author/1.jpg" alt="" class="rounded-circle">
+										<?php
+										$foto_autor = get_field("foto_autor");
+										?>
+										<img src="<?php echo $foto_autor['url'];?>" alt="" class="rounded-circle">
 									</div>
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores, eveniet, eligendi et nobis neque minus mollitia sit repudiandae ad repellendus recusandae blanditiis praesentium vitae ab sint earum voluptate velit beatae alias fugit accusantium laboriosam nisi reiciendis deleniti tenetur molestiae maxime id quaerat consequatur fugiat aliquam laborum nam aliquid. Consectetur, perferendis?
+									<?php the_field("descripcion_publicacion");?>
 								</div>
 							</div><!-- Post Single - Author End -->
 
@@ -173,11 +138,220 @@
 
 							<div class="related-posts clearfix">
 
-								
+								<?php 
+								$args = array(
+									'posts_per_page' => 4, // How many items to display
+									'post__not_in'   => array( get_the_ID() ), // Exclude current post
+									'no_found_rows'  => true, // We don't ned pagination so this speeds up the query
+								);
+
+								// Check for current post category and add tax_query to the query arguments
+								$cats = wp_get_post_terms( get_the_ID(), 'category' ); 
+								$cats_ids = array();  
+								foreach( $cats as $wpex_related_cat ) {
+									$cats_ids[] = $wpex_related_cat->term_id; 
+								}
+								if ( ! empty( $cats_ids ) ) {
+									$args['category__in'] = $cats_ids;
+								}
+
+								// Query posts
+								$wpex_query = new wp_query( $args );
+								// Loop through posts
+								$i=1;
+								$j=1;
+								$last_ref = null;
+								$total_post = count($wpex_query->posts);
+								foreach( $wpex_query->posts as $post ) : setup_postdata( $post );
+									if($i == 1) {
+								?>
+								<div class="col_half nobottommargin <?php echo $last_ref;?>">
+								<?php
+									}
+									$img = get_field("imagen_destacada");
+								?>
+									<div class="mpost clearfix">
+										<div class="entry-image">
+											<?php
+											$type_destacada = get_field("imagen_o_video_destacado");
+											if($type_destacada == 1) {
+												$img_destacada = get_field("imagen_destacada");
+											?>
+											<a href="<?php the_permalink(); ?>"><img src="<?php echo $img['url'];?>" alt="<?php echo $img['title'];?>"></a>
+											<?php
+											} else if($type_destacada == 2) {
+												the_field('video_destacado');
+											}
+											?>
+										</div>
+										<div class="entry-c">
+											<div class="entry-title">
+												<h4><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a></h4>
+											</div>
+											<ul class="entry-meta clearfix">
+												<li><i class="icon-calendar3"></i> <?php the_time('F j, Y'); ?></li>
+												<li><a href="#"><i class="icon-comments"></i> <?php echo wpb_comment_count($post->ID);?></a></li>
+											</ul>
+											<div class="entry-content"><?php the_field("resumen_post");?></div>
+										</div>
+									</div>
+								<?php
+								if($i == 1 && $total_post > $j) {
+									$i++;
+								} else if($i == 2 || $total_post == $j) {
+									$last_ref = 'col_last';
+								?>
+								</div>
+								<?php
+									$i = 1;
+								}
+								$j++;
+								// End loop
+								endforeach;
+
+								// Reset post data
+								wp_reset_postdata();
+
+								//print_r(wpse250243_comment_form_default_fields());?>
 
 							</div>
 
 						</div>
+
+
+						<!-- Comments
+							============================================= -->
+							<div id="comments" class="clearfix">
+
+								<h3 id="comments-title"><span><?php echo wpb_comment_count($post->ID);?></span> Comentarios</h3>
+								<!-- Comments List
+								============================================= -->
+								<ol class="commentlist clearfix">
+								<?php
+								$args = array(
+									'status' => 'approve',
+									'post_id' => $post->ID,
+									'parent' => '0'
+								);
+								$comments = get_comments($args);
+								foreach($comments as $comment) :
+								?>
+									<li class="comment even thread-even depth-1" id="li-comment-1">
+
+										<div id="comment-1" class="comment-wrap clearfix">
+
+											<div class="comment-meta">
+
+												<div class="comment-author vcard">
+
+													<span class="comment-avatar clearfix">
+													<img alt='' src='<?php bloginfo('template_directory')?>/images/avatar.png' class='avatar avatar-60 photo avatar-default' height='60' width='60' /></span>
+
+												</div>
+
+											</div>
+
+											<div class="comment-content clearfix">
+
+												<div class="comment-author"><?php echo $comment->comment_author;?><span><a href="#" title="Permalink to this comment"><?php the_time('F j, Y g:i a') ?></a></span></div>
+
+												<p><?php echo $comment->comment_content;?></p>
+
+												<a class='comment-reply-link' href='#'><i class="icon-reply"></i></a>
+
+											</div>
+
+											<div class="clear"></div>
+
+										</div>
+										<?php
+										$args_sub = array(
+											'status' => 'approve',
+											'post_id' => $post->ID,
+											'parent' => $comment->comment_ID
+										);
+										$sub_comments = get_comments($args_sub);
+										if(count($sub_comments) > 0) {
+											echo "<ul class='children'>";
+											foreach($sub_comments as $sub_comment) :
+										?>
+
+											<li class="comment byuser comment-author-_smcl_admin odd alt depth-2" id="li-comment-3">
+
+												<div id="comment-3" class="comment-wrap clearfix">
+
+													<div class="comment-meta">
+
+														<div class="comment-author vcard">
+
+															<span class="comment-avatar clearfix">
+															<img alt='' src='<?php bloginfo('template_directory')?>/images/avatar_admin.png' class='avatar avatar-40 photo' height='40' width='40' /></span>
+
+														</div>
+
+													</div>
+
+													<div class="comment-content clearfix">
+
+														<div class="comment-author"><a href='#' rel='external nofollow' class='url'><?php echo $sub_comment->comment_author;?></a><span><a href="#" title="Permalink to this comment"><?php echo mysql2date('F j, Y g:i a', $sub_comment->comment_date); ?></a></span></div>
+
+														<p><?php echo $sub_comment->comment_content;?></p>
+
+														<a class='comment-reply-link' href='#'><i class="icon-reply"></i></a>
+
+													</div>
+
+													<div class="clear"></div>
+
+												</div>
+
+											</li>
+										<?php
+											endforeach;
+											echo "</ul>";
+										}
+										?>
+									</li>
+								<?php
+								endforeach;
+								?>
+								</ol><!-- .commentlist end -->
+								<div class="clear"></div>
+
+								<!-- Comment Form
+								============================================= -->
+								<div id="respond" class="clearfix">
+
+									<h3>Deájanos <span>tu comentario</span></h3>
+
+									<form class="clearfix" action="" method="post" id="commentform">
+
+										<div class="col_half">
+											<label for="author">Nombre</label>
+											<input type="text" name="author" id="author" value="" size="22" tabindex="1" class="sm-form-control" />
+										</div>
+
+										<div class="col_half col_last">
+											<label for="email">Email</label>
+											<input type="text" name="email" id="email" value="" size="22" tabindex="2" class="sm-form-control" />
+										</div>
+
+										<div class="clear"></div>
+
+										<div class="col_full">
+											<label for="comment">Comentario</label>
+											<textarea name="comment" cols="58" rows="7" tabindex="4" class="sm-form-control"></textarea>
+										</div>
+
+										<div class="col_full nobottommargin">
+											<button name="submit" type="submit" id="submit-button" tabindex="5" value="Submit" class="button button-3d nomargin">Subir comentario</button>
+										</div>
+
+									</form>
+
+								</div><!-- #respond end -->
+
+							</div><!-- #comments end -->
 
 					</div><!-- .postcontent end -->
 
@@ -352,16 +526,7 @@
 							<div class="widget clearfix">
 
 								<h4>Listado de Tags</h4>
-								<div class="tagcloud">
-									<a href="#">Contenido Digital</a>
-									<a href="#">Redes Sociales</a>
-									<a href="#">Talento</a>
-									<a href="#">Diseño</a>
-									<a href="#">Desarrollo</a>
-									<a href="#">Performance</a>
-									<a href="#">Gerencia de Proyectos</a>
-									<a href="#">Tecnología</a>
-
+								<div class="tagcloud categorias-single-blog">
 								</div>
 
 							</div>
@@ -375,5 +540,8 @@
 			</div>
 
 		</section><!-- #content end -->
+		<?php endwhile; else : ?>
+			<p><?php esc_html_e( 'Sorry, no posts matched your criteria.' ); ?></p>
+		<?php endif; ?>
 
 <?php get_footer()?>

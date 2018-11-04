@@ -160,14 +160,13 @@ function wpbeginner_numeric_posts_nav() {
     echo '<ul class="pagination nobottommargin">' . "\n";
  
     /** Previous Post Link */
-    //if ( get_previous_posts_link() )
+    if ( get_previous_posts_link() )
         printf( '<li>%s</li>' . "\n", post_link_attributes(get_previous_posts_link("&laquo;")) );
  
     /** Link to first page, plus ellipses if necessary */
     if ( ! in_array( 1, $links ) ) {
         $class = 1 == $paged ? ' class="active"' : '';
- 
-        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( 1 ) )), '1' );
+        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( 1 ) ), 1), '1' );
  
         if ( ! in_array( 2, $links ) )
             echo '<li class="page-item">…</li>';
@@ -177,7 +176,7 @@ function wpbeginner_numeric_posts_nav() {
     sort( $links );
     foreach ( (array) $links as $link ) {
         $class = $paged == $link ? ' class="page-item active"' : ' class="page-item"';
-        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( $link ) )), $link );
+        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( $link ) ), $link), $link );
     }
  
     /** Link to last page, plus ellipses if necessary */
@@ -186,7 +185,7 @@ function wpbeginner_numeric_posts_nav() {
             echo '<li class="page-item">…</li>' . "\n";
  
         $class = $paged == $max ? ' class="page-item active"' : ' class="page-item"';
-        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( $max ) )), $max );
+        printf( '<li%s><a href="%s" class="page-link">%s</a></li>' . "\n", $class, alter_link_paginator(esc_url( get_pagenum_link( $max ) ), $max), $max );
     }
  
     /** Next Post Link */
@@ -197,14 +196,26 @@ function wpbeginner_numeric_posts_nav() {
  
 }
 
-function alter_link_paginator($link) {
-	$category = isset($_GET['category']) && !empty($_GET['category']) ? '&category='.$_GET['category'] : '';
+function alter_link_paginator($link, $position) {
+	$category = isset($_GET['category']) && !empty($_GET['category']) ? 'category='.$_GET['category'] : '';
 	$link = explode("?",$link);
-	return str_replace("page/", "?page=", $link[0].$category);
+	if($position > 1) {
+		$link = substr_replace($link[0], "", -1);
+		if(!empty($category)) {
+			$link .= "&".$category;
+		}	
+	} else {
+		$link = substr_replace($link[0], "", -1);	
+		if(!empty($category)) {
+			$link .= "?".$category;
+		}
+	}
+	
+	return str_replace("page/", "?page=", $link);
 }
 
 function post_link_attributes($output) {
-	$category = isset($_GET['category']) && !empty($_GET['category']) ? '&category='.$_GET['category'] : '';
+	$category = isset($_GET['category']) && !empty($_GET['category']) ? 'category='.$_GET['category'] : '';
     $code = 'class="page-link"';
     $output = str_replace('<a href=', '<a '.$code.' href=', $output);
     
@@ -212,10 +223,80 @@ function post_link_attributes($output) {
     	$pos = substr($output, strpos($output, '?'));
     	$pos = substr($pos, 0, strpos($pos, '"'));
     	$output = str_replace($pos, '', $output);
+    	$output = str_replace('page/', '?page=', $output);
+    	
+    	if(!empty($category)) {
+    		$category = str_replace("/", "", $category);
+    		if(strpos($output, '?') == "") {
+    			$pos = substr($output, strpos($output, 'blog/'));
+    			$pos = substr($pos, 0, strpos($pos, '"'));
+		    	$pos = substr_replace($pos, "", -1);
+		    	$output = str_replace($pos, $pos.'?'.$category, $output);
+    		} else {
+    			$pos = substr($output, strpos($output, '?'));
+		    	$pos = substr($pos, 0, strpos($pos, '"'));
+		    	$pos = substr_replace($pos, "", -1);
+		    	$output = str_replace($pos, $pos.'&'.$category, $output);
+    		}
+    	}
+    } else {
+    	$output = str_replace('page/', '?page=', $output);
     }
-    $output = str_replace('page/', '?page=', $output);
     return $output;
 }
+
+/*******************************************************************************************************/
+/* Comentarios blog */
+/*******************************************************************************************************/
+function wpb_comment_count($post_id = 0) { 
+ 
+	$post = get_post( $post_id );
+ 
+    if ( ! $post ) {
+        $count = 0;
+    } else {
+        $count = $post->comment_count;
+        $post_id = $post->ID;
+    }
+ 
+    return apply_filters( 'get_comments_number', $count, $post_id );
+ 
+} 
+ 
+add_shortcode('wpb_total_comments','wpb_comment_count'); 
+add_filter('widget_text','do_shortcode'); 
+
+/*******************************************************************************************************/
+/* Añadir comentarios blog */
+/*******************************************************************************************************/
+function add_comment($post_id, $urlPath) {
+	extract($_POST);
+	if(isset($author) && isset($email) && isset($comment)) {
+		
+		$time = current_time('mysql');
+
+		$data = array(
+		    'comment_post_ID' => $post_id,
+		    'comment_author' => $author,
+		    'comment_author_email' => $email,
+		    'comment_author_url' => 'http://',
+		    'comment_content' => $comment,
+		    'comment_type' => '',
+		    'comment_parent' => 0,
+		    'user_id' => 0,
+		    'comment_date' => $time,
+		    'comment_approved' => 0,
+		);
+
+		wp_insert_comment($data);
+		echo '<script>
+		window.location.href = "'.$urlPath.'";
+		</script>';
+		exit;
+	}
+}
+
+
 
 function wmpudev_enqueue_icon_stylesheet() {
     wp_register_style( 'fontawesome', 'http:////maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' );

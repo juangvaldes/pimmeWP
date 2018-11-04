@@ -61,9 +61,9 @@ $( document ).ready(function() {
 	 	}
 	});
 
-		$.get( path_wp + "/../../../wp-json/wp/v2/categories", function( data ) {
+	$.get( path_wp + "/../../../wp-json/wp/v2/categories", function( data ) {
 	 	if(data.length > 0) {
-	 		var div = $('#categorias-single-blog');
+	 		var div = $('.categorias-single-blog');
 	 		$.each(data, function(v, k) {
 	 			if(k.id != 1) {
 	 				if(k.slug == 'todos') {
