@@ -368,7 +368,7 @@
 								</ul>
 
 								<a href="#" class="btn btn-secondary btn-sm fright">Sìguenos en Twitter</a>
-
+								<?php echo do_shortcode('[custom-twitter-feeds]');?>
 							</div>
 
 							<div class="widget clearfix">
