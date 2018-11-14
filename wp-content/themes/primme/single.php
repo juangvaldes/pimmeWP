@@ -52,6 +52,9 @@
 									<?php
 									} else if($type_destacada == 2) {
 										the_field('video_destacado');
+									} else if($type_destacada == 3) {
+										$iframe_destacado = get_field("iframe_destacado");
+										echo render_iframe($iframe_destacado);
 									}
 									?>
 								</div><!-- .entry-image end -->
@@ -59,13 +62,24 @@
 								<!-- Entry Content
 								============================================= -->
 								<div class="entry-content notopmargin" style="font-size: 20px; font-weight: 200;">
-
+									<?php 
+									$categories = get_the_category();
+									?>
 									<p><?php the_content();?></p>
 									<!-- Post Single - Content End -->
 
 									<!-- Tag Cloud
 									============================================= -->
-									<div class="tagcloud clearfix bottommargin categorias-single-blog">
+									<div class="tagcloud clearfix bottommargin">
+										<?php 
+										if ( count( $categories ) > 0 ) {
+											foreach( $categories as $category ) {
+										?>
+										<a href=""><?php echo $category->name;?></a>
+										<?php
+											}
+										}
+										?>
 										
 									</div><!-- .tagcloud end -->
 
@@ -76,7 +90,8 @@
 									<div class="si-share noborder clearfix">
 										<span>Comparte esta publicación:</span>
 										<div>
-											<a href="#" class="social-icon si-borderless si-facebook">
+											<div class="addthis_inline_share_toolbox"></div>
+											<!--a href="#" class="social-icon si-borderless si-facebook">
 												<i class="icon-facebook"></i>
 												<i class="icon-facebook"></i>
 											</a>
@@ -95,7 +110,7 @@
 											<a href="#" class="social-icon si-borderless si-email3">
 												<i class="icon-email3"></i>
 												<i class="icon-email3"></i>
-											</a>
+											</a-->
 										</div>
 									</div><!-- Post Single - Share End -->
 
@@ -107,11 +122,11 @@
 							<div class="post-navigation clearfix">
 
 								<div class="col_half nobottommargin">
-									<?php previous_post_link("%link","&lArr; Anterior artículo"); ?>
+									<?php previous_post_link(); ?>
 								</div>
 
 								<div class="col_half col_last tright nobottommargin">
-									<?php next_post_link("%link","Siguiente artículo &rArr;"); ?>
+									<?php next_post_link(); ?>
 								</div>
 							</div><!-- .post-navigation end -->
 
@@ -190,7 +205,7 @@
 											</div>
 											<ul class="entry-meta clearfix">
 												<li><i class="icon-calendar3"></i> <?php the_time('F j, Y'); ?></li>
-												<li><a href="#"><i class="icon-comments"></i> <?php echo wpb_comment_count($post->ID);?></a></li>
+												<li><a href="<?php the_permalink(); ?>"><i class="icon-comments"></i> <?php echo wpb_comment_count($post->ID);?></a></li>
 											</ul>
 											<div class="entry-content"><?php the_field("resumen_post");?></div>
 										</div>
@@ -253,7 +268,7 @@
 
 											<div class="comment-content clearfix">
 
-												<div class="comment-author"><?php echo $comment->comment_author;?><span><a href="#" title="Permalink to this comment"><?php the_time('F j, Y g:i a') ?></a></span></div>
+												<div class="comment-author"><?php echo $comment->comment_author;?><span><a href="<?php the_permalink(); ?>" title="Permalink to this comment"><?php the_time('F j, Y g:i a') ?></a></span></div>
 
 												<p><?php echo $comment->comment_content;?></p>
 
@@ -293,7 +308,7 @@
 
 													<div class="comment-content clearfix">
 
-														<div class="comment-author"><a href='#' rel='external nofollow' class='url'><?php echo $sub_comment->comment_author;?></a><span><a href="#" title="Permalink to this comment"><?php echo mysql2date('F j, Y g:i a', $sub_comment->comment_date); ?></a></span></div>
+														<div class="comment-author"><a href='<?php the_permalink(); ?>' rel='external nofollow' class='url'><?php echo $sub_comment->comment_author;?></a><span><a href="<?php the_permalink(); ?>" title="Permalink to this comment"><?php echo mysql2date('F j, Y g:i a', $sub_comment->comment_date); ?></a></span></div>
 
 														<p><?php echo $sub_comment->comment_content;?></p>
 
@@ -360,17 +375,6 @@
 					<div class="sidebar nobottommargin col_last clearfix">
 						<div class="sidebar-widgets-wrap">
 
-							<div class="widget widget-twitter-feed clearfix">
-
-								<h4>Twitter Feed</h4>
-								<ul class="iconlist twitter-feed" data-username="envato" data-count="2">
-									<li></li>
-								</ul>
-
-								<a href="#" class="btn btn-secondary btn-sm fright">Sìguenos en Twitter</a>
-
-							</div>
-
 							<div class="widget clearfix">
 
 								<h4>Galería de Instagram</h4>
@@ -382,110 +386,48 @@
 								<div class="tabs nobottommargin clearfix" id="sidebar-tabs">
 
 									<ul class="tab-nav clearfix">
-										<li><a href="#tabs-1">Popular</a></li>
-										<li><a href="#tabs-2">Recientes</a></li>
-										<li><a href="#tabs-3"><i class="icon-comments-alt norightmargin"></i></a></li>
+										<li><a href="#tabs-1">Recientes</a></li>
+										<li><a href="#tabs-2"><i class="icon-comments-alt norightmargin"></i></a></li>
 									</ul>
 
 									<div class="tab-container">
 
 										<div class="tab-content clearfix" id="tabs-1">
 											<div id="popular-post-list-sidebar">
-
+												<?php
+												$popularpost = new WP_Query( array( 'posts_per_page' => 3, 'orderby' => 'meta_value_num', 'order' => 'DESC'  ) );
+												while ( $popularpost->have_posts() ) : $popularpost->the_post();
+												?>
 												<div class="spost clearfix">
 													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/3.jpg" alt=""></a>
+														<a href="#" class="nobg"><img class="rounded-circle" src="<?php bloginfo('template_directory')?>/images/magazine/small/3.jpg" alt=""></a>
 													</div>
 													<div class="entry-c">
 														<div class="entry-title">
-															<h4><a href="#">Debitis nihil placeat, illum est nisi</a></h4>
+															<h4><a href="<?php the_permalink(); ?>"><?php the_title();?></a></h4>
 														</div>
 														<ul class="entry-meta">
-															<li><i class="icon-comments-alt"></i> 35 Comentarios</li>
+															<li><i class="icon-comments-alt"></i> <?php echo wpb_comment_count($post->ID);?> Comentarios</li>
 														</ul>
 													</div>
 												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/2.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<div class="entry-title">
-															<h4><a href="#">Elit Assumenda vel amet dolorum quasi</a></h4>
-														</div>
-														<ul class="entry-meta">
-															<li><i class="icon-comments-alt"></i> 24 Comentarios</li>
-														</ul>
-													</div>
-												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/1.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<div class="entry-title">
-															<h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4>
-														</div>
-														<ul class="entry-meta">
-															<li><i class="icon-comments-alt"></i> 19 Comentarios</li>
-														</ul>
-													</div>
-												</div>
+												<?php
+												endwhile;
+												?>
 
 											</div>
 										</div>
 										<div class="tab-content clearfix" id="tabs-2">
 											<div id="recent-post-list-sidebar">
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/1.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<div class="entry-title">
-															<h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4>
-														</div>
-														<ul class="entry-meta">
-															<li>10/10/2018</li>
-														</ul>
-													</div>
-												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/2.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<div class="entry-title">
-															<h4><a href="#">Elit Assumenda vel amet dolorum quasi</a></h4>
-														</div>
-														<ul class="entry-meta">
-															<li>10/10/2018</li>
-														</ul>
-													</div>
-												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/magazine/small/3.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<div class="entry-title">
-															<h4><a href="#">Debitis nihil placeat, illum est nisi</a></h4>
-														</div>
-														<ul class="entry-meta">
-															<li>10/10/2018</li>
-														</ul>
-													</div>
-												</div>
-
-											</div>
-										</div>
-										<div class="tab-content clearfix" id="tabs-3">
-											<div id="recent-post-list-sidebar">
-
+											<?php
+											$args = array(
+												'status' => 'approve',
+												'post_id' => $post->ID,
+												'parent' => '0'
+											);
+											$comments = get_comments($args);
+											foreach($comments as $comment) :
+											?>
 												<div class="spost clearfix">
 													<div class="entry-image">
 														<a href="#" class="nobg"><img class="rounded-circle" src="images/icons/avatar.jpg" alt=""></a>
@@ -494,25 +436,9 @@
 														<strong>John Doe:</strong> Veritatis recusandae sunt repellat distinctio...
 													</div>
 												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/icons/avatar.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<strong>Mary Jane:</strong> Possimus libero, earum officia architecto maiores....
-													</div>
-												</div>
-
-												<div class="spost clearfix">
-													<div class="entry-image">
-														<a href="#" class="nobg"><img class="rounded-circle" src="images/icons/avatar.jpg" alt=""></a>
-													</div>
-													<div class="entry-c">
-														<strong>Site Admin:</strong> Deleniti magni labore laboriosam odio...
-													</div>
-												</div>
-
+											<?php
+											endforeach;
+											?>
 											</div>
 										</div>
 
@@ -525,7 +451,16 @@
 							<div class="widget clearfix">
 
 								<h4>Listado de Tags</h4>
-								<div class="tagcloud categorias-single-blog">
+								<div class="tagcloud">
+									<?php 
+									if ( count( $categories ) > 0 ) {
+										foreach( $categories as $category ) {
+									?>
+									<a href=""><?php echo $category->name;?></a>
+									<?php
+										}
+									}
+									?>
 								</div>
 
 							</div>
