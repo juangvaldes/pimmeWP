@@ -1,13 +1,16 @@
 <?php
-$iframe = get_field("embeber_formulario");
-$width = get_field("width");
-$height = get_field("height");
+$form_id = get_field("form_id");
 ?>
 <div class="form-group col_half">
-	<iframe src="<?php echo $iframe;?>"
-	scrolling="no"
-	frameborder="0"
-	width="<?php echo $width;?>" 
-	height="<?php echo $height;?>"
-	style=" overflow: hidden;"></iframe>
+	<!--[if lte IE 8]>
+	<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+	<![endif]-->
+	<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+
+	<script>
+	  hbspt.forms.create({
+		portalId: "5031407",
+		formId: "<?php echo $form_id;?>"
+	});
+	</script>
 </div>

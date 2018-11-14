@@ -1,4 +1,9 @@
-<?php get_header();?>
+<?php 
+/*
+ Template Name: Plantilla Primme Hunt
+ */
+get_header();
+?>
 
 	<?php
 	if(is_front_page()) {

@@ -35,7 +35,9 @@ if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_pos
 <?php
 	} else if($tipo_seccion == 3) {
 		$add_img = get_field("agregar_imagen");
+		$tipo_imagen = get_field("tipo_de_imagen");
 		$color_section = get_field("color_seccion");
+		$img = get_field("imagen_contenido");
 		$style_section = null;
 		$style_text = null;
 		if(!empty($color_section) && ( $color_section != '#ffffff' )) {
@@ -51,12 +53,26 @@ if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_pos
 		}
 ?>
 	<div class="section notopmargin nobottommargin" <?php echo $style_section;?>>
+		<?php
+		if(!empty($add_img)) {
+			if($tipo_imagen == 2) {
+				$dimensiones = get_field("dimensiones");
+				$top = $dimensiones["top"];
+				$left = $dimensiones["left"];
+				$width = $dimensiones["width"];
+				$height = $dimensiones["height"];
+		?>
+		<div class="d-none d-lg-block" style="position: absolute; top: <?php echo $top;?>px; left: <?php echo $left;?>px; width: <?php echo $width;?>%; height: <?php echo $height;?>%; background: transparent url('<?php echo $img['url'];?>') bottom right no-repeat;"></div>
+		<?php
+			}
+		}
+		?>
 		<div class="container clearfix" <?php echo $un_ancla;?> >
 
 			<?php
 			if(!empty($add_img)) {
+				if($tipo_imagen == 1) {
 				$position_css = null;
-				$img = get_field("imagen_contenido");
 				$position_img = get_field("posicion_imagen");
 				if($position_img == 'right') {
 					$position_css = 'position-img-info';
@@ -66,6 +82,7 @@ if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_pos
 				<img src="<?php echo $img['url'];?>" alt="<?php echo $img['alt'];?>" class="center-block">
 			</div>
 			<?php
+				}
 			}
 			?>
 

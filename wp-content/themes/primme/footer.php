@@ -82,100 +82,24 @@ if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_pos
 						<div class="widget subscribe-widget clearfix">
 							<h5><strong><?php the_field('informacion_suscripcion');?></h5>
 							<div class="widget-subscribe-form-result"></div>
-							<form id="widget-subscribe-form" action="include/subscribe.php" role="form" method="post" class="nobottommargin">
-								<div class="input-group divcenter">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="icon-email2"></i></div>
-									</div>
-									<input type="email" id="widget-subscribe-form-email" name="widget-subscribe-form-email" class="form-control required email" placeholder="Ingresa tu correo">
-									
-
-
-								<!-- -->
-
-								<a href="#myModal1" data-lightbox="inline" class="btn btn-outline-light">Suscribirme</a>
-
-								<!-- Modal -->
-								<div class="modal1 mfp-hide" id="myModal1">
-									<div class="block divcenter" style="background-image: url(images/light-background.jpg); background-repeat: no-repeat; padding-top: 70px; max-width: 320px; background-size: 320px;">
-										<div class="feature-box fbox-center fbox-effect nobottomborder nobottommargin" style="padding: 40px;">								<h3 style="color: #FFFFFF; font-size: 15px;">¡Gracias por Registrarte!</h3>
-										</div>
-										<div class="section center nomargin" style="padding: 30px;">
-												<div class="form-group">
-												<p style="font-size: 15px;">Selecciona el sector o sectores de tu interés y así <strong>compartiremos insights sobre estas areas.</strong></p>
-
-	
-												
-
-													<form style="align-items: left;">
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-															<label class="form-check-label" for="defaultCheck1">
-																Contenido Digital
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-															<label class="form-check-label" for="defaultCheck2">
-																Redes Sociales
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-															<label class="form-check-label" for="defaultCheck1">
-																Talento
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-															<label class="form-check-label" for="defaultCheck2">
-																Diseño
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-															<label class="form-check-label" for="defaultCheck1">
-																Desarrollo
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-															<label class="form-check-label" for="defaultCheck2">
-																Performance
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-															<label class="form-check-label" for="defaultCheck1">
-																Gerencia de Proyectos
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-															<label class="form-check-label" for="defaultCheck2">
-																Tecnología
-															</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-															<label class="form-check-label" for="defaultCheck2">
-																Todos los temas
-															</label>
-														</div>
-													</form>
-												</div>
-
-												<div class="divider divider-center"><i class="icon-screen"></i></div>
-											
-												<a href="#" class="button" onClick="$.magnificPopup.close();return false;">Enviar</a>
-											
-												</div>
-										</div>
-								</div>
-								<!-- -->
-								
-								</div>
-							</form>
+							<?php
+							$add_iframe = get_field("anadir_iframe");
+							if($add_iframe == 1) {
+								$form_id = get_field("form_id");
+							?>
+							<!--[if lte IE 8]>
+							<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+							<![endif]-->
+							<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+							<script>
+							  hbspt.forms.create({
+								portalId: "5031407",
+								formId: "<?php echo $form_id;?>"
+							});
+							</script>
+							<?php
+							}
+							?>
 						</div>
 
 						<div class="widget clearfix" style="margin-bottom: -20px;">
