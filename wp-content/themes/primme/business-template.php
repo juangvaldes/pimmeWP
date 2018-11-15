@@ -3,18 +3,22 @@
  Template Name: Plantilla Primme Business
  */
  get_header("business");
- ?>
-
- <?php
+ 
 	if(is_front_page()) {
 
-	get_template_part("content", "home-business");?>
+	get_template_part("content", "home-business");
+?>
+<section id="content" style="overflow: visible;">
 
-	<?php
+			<div class="content-wrap">
+<?php
+	get_template_part("content", "business");
+?>
+	</div>
+</section>
+<?php
 	} else {
     	get_template_part("content", "business");
 	}
-	?>
-business-itemplate.php
 
-<?php get_footer("business");?>
+get_footer();?>

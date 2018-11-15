@@ -15,7 +15,7 @@
 </head>
 
 <body class="stretched">
-
+	<input type="hidden" id="path_wp" value="<?php bloginfo('template_directory')?>"/>
 	<!-- Document Wrapper
 	============================================= -->
 	<div id="wrapper" class="clearfix">
@@ -43,22 +43,7 @@
 
 
 					<nav id="primary-menu">
-
-						<ul>
-
-							<li><a href="index.html"><div><i class="icon-home"></i>Inicio Business</div></a>
-							
-							<li><a href="contacto.html"><div><i class="icon-line2-arrow-right"></i>CONÉCTESE CON LOS MEJORES</div></a>
-							</li>
-
-							<li><a href="../blog.html"><div><i class="icon-news"></i>Blog</div></a>
-							</li>
-
-							<li><a href="../index.html"><div><i class="icon-share"></i>RED DE PERFILES</div></a>
-							</li>
-						</ul>
-
-
+						
 
 						<!-- Top Search
 						============================================= -->
@@ -74,5 +59,5 @@
 				</div>
 
 			</div>
-
+<input type="hidden" name="business" id="business" value="true">
 		</header><!-- #header end -->

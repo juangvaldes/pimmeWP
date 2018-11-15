@@ -2,6 +2,27 @@ $( document ).ready(function() {
 	
 	var path_wp = $("#path_wp").val();
 	var page_blog = $("#page-blog").val();
+	var business = $("#business").val();
+
+	$("#top-search").children().children().children(":first").remove();
+	$("#top-search").children().children().children(":last").remove();
+	var htmlInput = $("#top-search").children().children().html();
+	$("#top-search").children(":first").children().remove();
+	$("#top-search").children(":first").append(htmlInput);
+	$("#top-search").children(":first").children().attr("placeholder","Escribe aquí...");
+	$("#top-search").children(":first").children().addClass("form-control");
+
+	if(typeof business !== 'undefined' && business == "true") {
+		$(".propuesta-card ul").addClass("list-group");
+		$(".propuesta-card ul").addClass("list-group-flush");
+		$(".propuesta-card ul li").each(function(v, k) {
+			var li = $(this).addClass("list-group-item");
+			var text = $(this).text();
+			$(this).text("");
+			$(this).attr("style", "font-size: 20px; font-weight: lighter; border-left: 1px solid rgba(0, 0, 0, 0.125);")
+			$('<i/>').appendTo(li).addClass("icon-check").after(text);
+		});
+	}
 
 	if(typeof page_blog !== 'undefined' && page_blog == "true") {
 		validate_header();
