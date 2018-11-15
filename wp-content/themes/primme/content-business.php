@@ -11,6 +11,12 @@ if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_pos
 
 	if($type_contenido == 1) {
 		get_template_part("content", "business-propuesta");
+	} else if($type_contenido == 3) {
+		get_template_part("content", "business-conectamos");
+	} else if($type_contenido == 4) {
+		get_template_part("content", "business-hacemos");
+	} else if($type_contenido == 5) {
+		get_template_part("content", "business-buscados");
 	}
 
 endwhile; else :

@@ -38,6 +38,7 @@ $( document ).ready(function() {
 	 		var nav = $('nav#primary-menu');
 	 		var ul = $('<ul>').appendTo(nav);
 	 		$.each(data.items, function(v, k) {
+	 			console.log(k.url);
 	 			var li = $('<li/>')
 		        .appendTo(ul);
 		        var aaa = $('<a/>')

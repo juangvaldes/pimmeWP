@@ -18,7 +18,8 @@
 </section>
 <?php
 	} else {
-    	get_template_part("content", "business");
+    	get_template_part("content", "conectese");
 	}
 
-get_footer();?>
+get_footer();
+?>
