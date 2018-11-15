@@ -1,3 +1,20 @@
+
+		<!-- Page Title
+		============================================= -->
+		<section id="page-title">
+
+			<div class="container clearfix" style="color: #fff;">
+				<?php the_field("registrese");?>
+			<!--
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+					<li class="breadcrumb-item"><a href="#">Inscríbete</a></li>
+					
+				</ol>
+			-->
+
+		</section><!-- #page-title end -->
+
 <!-- Content
 		============================================= -->
 		<section id="content">
