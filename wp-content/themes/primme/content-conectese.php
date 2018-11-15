@@ -39,41 +39,38 @@
 
 					<div class="clear"></div>
 
-					<!-- Contact Info
+										<!-- Contact Info
 					============================================= -->
 					<div class="row clear-bottommargin">
 
-						<div class="col-lg-4 col-md-6 bottommargin clearfix">
-							<div class="feature-box fbox-center fbox-bg fbox-plain">
-								<div class="fbox-icon">
-									<a href="#"><i class="icon-map-marker2"></i></a>
-								</div>
-								<h3>Nuestras Oficinas<span class="subtitle">Bogotá, Colombia.</span></h3>
-							</div>
-						</div>
+<?php
+$info_contacto = array(
+	'post_type' => 'info_contacto'
+	);
 
+$the_query = new WP_Query($info_contacto);
+if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_post();
+	$oficinas = get_field("oficinas");
+	
+	
+?>
 						<div class="col-lg-4 col-md-6 bottommargin clearfix">
 							<div class="feature-box fbox-center fbox-bg fbox-plain">
 								<div class="fbox-icon">
-									<a href="#"><i class="icon-phone3"></i></a>
+									<a href="#"><i class=<?php the_field("class-icono");?>></i></a>
 								</div>
-								<h3>Llámenos<span class="subtitle">(+57) 317 373 0263</span></h3>
-							</div>
-						</div>
-
-						<div class="col-lg-4 col-md-6 bottommargin clearfix">
-							<div class="feature-box fbox-center fbox-bg fbox-plain">
-								<div class="fbox-icon">
-									<a href="#"><i class="icon-google"></i></a>
-								</div>
-								<h3>Video Llamada?<span class="subtitle">hangouts - info@primmemhunt.com</span></h3>
+								<h3><?php the_field("descripcion");?></h3>
 							</div>
 						</div>
 
 						
 
-					</div><!-- Contact Info End -->
-
+<?php
+endwhile; else :
+_e('Sorry, the post had not content.');
+endif;
+?>
+</div><!-- Contact Info End -->
 				</div>
 
 			</div>
