@@ -8,18 +8,11 @@
  <?php
 	if(is_front_page()) {
 
-	get_template_part("content", "business");?>
+	get_template_part("content", "home-business");?>
 
-	<!-- Content
-	============================================= -->
-	<section id="business">
-		<?php
-			get_template_part("business", "index");
-		?>		
-	</section><!-- #content end -->
 	<?php
 	} else {
-    	get_template_part("business", "index");
+    	get_template_part("content", "business");
 	}
 	?>
 business-itemplate.php
