@@ -33,8 +33,8 @@
 					<!-- Logo
 					============================================= -->
 					<div id="logo">
-						<a href="index.html" class="standard-logo" data-dark-logo="<?php bloginfo('template_directory')?>/images/logo-dark.png"><img src="images/logo.png" alt="Canvas Logo"></a>
-						<a href="index.html" class="retina-logo" data-dark-logo="<?php bloginfo('template_directory')?>/images/logo-dark@2x.png"><img src="images/logo@2x.png" alt="Canvas Logo"></a>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="standard-logo" data-dark-logo="<?php bloginfo('template_directory')?>/images/logo-business.png"><img src="<?php bloginfo('template_directory')?>/images/logo-business.png" alt="Canvas Logo"></a>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="retina-logo" data-dark-logo="<?php bloginfo('template_directory')?>/images/logo-dark@2x-business.png"><img src="<?php bloginfo('template_directory')?>/images/logo-dark@2x-business.png" alt="Canvas Logo"></a>
 					</div><!-- #logo end -->
 
 					<!-- Primary Navigation
@@ -43,7 +43,7 @@
 
 
 					<nav id="primary-menu">
-						
+
 
 						<!-- Top Search
 						============================================= -->

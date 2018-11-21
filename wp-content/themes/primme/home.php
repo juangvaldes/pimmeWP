@@ -3,7 +3,19 @@
 		<!-- Page Title
 		============================================= -->
 		<section id="page-title2">
+			<?php
+			global $post;
+			echo $post_slug = $post->post_name;
+			$page = array(
+				'pagename' => $post_slug
+				);
 
+			$the_query = new WP_Query($page);
+			if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_post();
+			echo "aaa";
+			endwhile; 
+			endif;
+			?>
 			<div class="container clearfix">
 				<h1 style="color: #fff;">Blog</h1>
 				<span style="color: #fff;">Las últimas noticias sobre...</span>

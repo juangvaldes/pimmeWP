@@ -296,6 +296,17 @@ function add_comment($post_id, $urlPath) {
 	}
 }
 
+/*
+ * Función para imprimir la ruta de la imagen destacada.
+ * Ejemplo de utilización: echo atrib_imagen_destacada();
+ */
+function atrib_imagen_destacada() {
+    global $post;
+    $thumbID = get_post_thumbnail_id( $post->ID );
+    $imgDestacada = wp_get_attachment_image_src( $thumbID, 'thumbnail' ); // Sustituir por thumbnail, medium, large o full
+    return $imgDestacada[0]; // 0 = ruta, 1 = altura, 2 = anchura, 3 = boolean
+}
+
 function wmpudev_enqueue_icon_stylesheet() {
     wp_register_style( 'fontawesome', 'http:////maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' );
     wp_enqueue_style( 'fontawesome');

@@ -1,4 +1,4 @@
-
+<input type="hidden" id="page-blog" value="true"/>
 		<!-- Page Title
 		============================================= -->
 		<section id="page-title">

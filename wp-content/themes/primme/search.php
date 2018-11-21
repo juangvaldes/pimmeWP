@@ -30,6 +30,7 @@ $search = new WP_Query( $search_query );
 			$i = 0;
 			while ( $search->have_posts() ) {
 				$search->the_post();
+
 		?>
 		<div class="section notopborder nomargin header-stick">
 			<div class="container clearfix">
@@ -43,10 +44,10 @@ $search = new WP_Query( $search_query );
 				}
 				?>
 				<div class="heading-block">
-					<h3><?php echo get_the_title();?></h3>
+					<h3><a href="<?php the_permalink(); ?>"><?php echo get_the_title();?></a></h3>
 				</div>
 
-				<p style="font-size: 20px; font-weight: lighter;"><?php the_field("resumen_post");?></p>
+				<p style="font-size: 20px; font-weight: lighter;"><a href="<?php the_permalink(); ?>"><?php the_field("resumen_post");?></a></p>
 
 			</div>
 		</div>

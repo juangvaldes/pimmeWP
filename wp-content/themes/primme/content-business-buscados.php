@@ -16,16 +16,22 @@ $imagen = get_field("imagen_de_fondo");
 			);
 
 		$the_query = new WP_Query($perfiles_buscados);
-
+		$count_post = wp_count_posts('perfiles_buscados')->publish;
+		$i = 1;
+		$last_css = null;
 		if( have_posts() ) : while( $the_query -> have_posts() ) : $the_query -> the_post();
+			if($i == $count_post) {
+				$last_css = "col_last";
+			}
 		?>
 
-		<div class="col_one_fifth nobottommargin" data-animate="bounceIn">
+		<div class="col_one_fifth nobottommargin <?php echo $last_css;?>" data-animate="bounceIn">
 			<div class="counter counter-large"><span data-from="100" data-to="<?php the_field("cantidad_buscada");?>" data-refresh-interval="20" data-speed="2000"></span></div>
 			<h5 style="color: #fff;"><?php the_field("nombre_perfil_buscado");?></h5>
 		</div>
 
 		<?php
+		$i++;
 		endwhile; else :
 		_e('Sorry, the post had not content.');
 		endif;

@@ -23,17 +23,26 @@ if($agregar_imagen==1)
 
 					<div class="contact-form-result"></div>
 
+					<form class="landing-wide-form landing-form-overlay dark nobottommargin clearfix" novalidate="novalidate">
+						<div class="heading-block nobottommargin nobottomborder">
+							<h3>Contáctenos Hoy</h3>
+							<span>Y le ayudaremos a encontrar <br> el perfil digital y de tecnología que <br> está buscando para su compañía. </span>
+						</div>
+
 					<!--[if lte IE 8]>
 					<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
 					<![endif]-->
 					<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
-
-					<script>
-					  hbspt.forms.create({
-						portalId: "5031407",
-						formId: "<?php echo $form_id;?>"
-					});
-					</script>
+					<div class="hbspt-form" id="hbspt-form-1542297686349-9677737570">
+						<div id="hbspt-forms-recaptchaTarget-0"></div>
+						<script>
+						  hbspt.forms.create({
+							portalId: "5031407",
+							formId: "<?php echo $form_id;?>"
+						});
+						</script>
+					</div>
+					</form>
 				</div>
 
 			</div>
