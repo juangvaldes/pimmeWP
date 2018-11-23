@@ -9,6 +9,15 @@
 
     <!-- Stylesheets
     ============================================= -->
+
+<meta name="author" content="Primme Hunt">
+    <meta name="description" content="Conectamos los mejores talentos digitales con los proyectos más ambiciosos.">
+    <meta name="keywords" content="profesionales digitales, profesionales de tecnología, tecnología, medios digitales, IT, innovación, trabajo, trabajo digital, cargos digitales, trabajo para el futuro.">
+    <meta property="og:title" content="Primme Hunt | Red de profesionales digitales y de tecnología">
+    <meta property="og:site_name" content="Primme Hunt | Red de profesionales digitales y de tecnología"> 
+    <meta property="og:description" content="Creemos en los mejores talentos digitales para construir los equipos más exitosos y pensados para el futuro.">
+    <meta property="og:image" content="http://www.primmehunt.com/images/landing/landing2.jpg" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <link rel="profile" href="http://gmpg.org/xfn/11">
     <?php wp_head(); ?>

@@ -288,6 +288,7 @@ function add_comment($post_id, $urlPath) {
 		    'comment_approved' => 0,
 		);
 
+send_smtp_email( $phpmailer ) ;
 		wp_insert_comment($data);
 		echo '<script>
 		window.location.href = "'.$urlPath.'";
@@ -312,4 +313,35 @@ function wmpudev_enqueue_icon_stylesheet() {
     wp_enqueue_style( 'fontawesome');
 }
 add_action( 'wp_enqueue_scripts', 'wmpudev_enqueue_icon_stylesheet' );
+
+
+add_action('phpmailer_init','send_smtp_email');
+function send_smtp_email( $phpmailer )
+
+{
+    // Define que estamos enviando por SMTP
+    $phpmailer->isSMTP();
+ 
+    // La dirección del HOST del servidor de correo SMTP p.e. smtp.midominio.com
+    $phpmailer->Host = "smtp.gmail.com";
+ 
+    // Uso autenticación por SMTP (true|false)
+    $phpmailer->SMTPAuth = true;
+ 
+    // Puerto SMTP - Suele ser el 25, 465 o 587
+    $phpmailer->Port = "465";
+ 
+    // Usuario de la cuenta de correo
+    $phpmailer->Username = "aleja.rico32@gmail.com";
+ 
+    // Contraseña para la autenticación SMTP
+    $phpmailer->Password = "_Aleja2253";
+ 
+    // El tipo de encriptación que usamos al conectar - ssl (deprecated) o tls
+    $phpmailer->SMTPSecure = "tls";
+ 
+    $phpmailer->From = "aleja.rico32@gmail.com";
+    $phpmailer->FromName = "Soporte";
+}
+
 ?>

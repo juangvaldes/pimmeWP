@@ -90,7 +90,7 @@
 									<div class="si-share noborder clearfix">
 										<span>Comparte esta publicación:</span>
 										<div>
-											<div class="addthis_inline_share_toolbox"></div>
+											<div class="addthis_inline_share_toolbox"><?php echo do_shortcode('[ssba-buttons]');?></div>
 											<!--a href="#" class="social-icon si-borderless si-facebook">
 												<i class="icon-facebook"></i>
 												<i class="icon-facebook"></i>
